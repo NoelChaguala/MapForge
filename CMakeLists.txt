@@ -43,8 +43,11 @@ add_library(mapforge STATIC
     src/version.cpp
     src/osm/osm_parser.cpp
     src/graph/graph.cpp
-    src/geography/distance.cpp
+
+    src/geography/geo_utils.cpp
+
     src/graph/graph_builder.cpp
+    
 )
 
 add_library(MapForge::MapForge ALIAS mapforge)
