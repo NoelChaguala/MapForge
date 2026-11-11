@@ -1,13 +1,51 @@
 
 <?xml version="1.0" encoding="UTF-8"?>
+
 <osm version="0.6" generator="MapForge">
+
+    <!-- Geographic nodes -->
     <node id="1001" lat="36.1627" lon="-86.7816"/>
     <node id="1002" lat="36.1630" lon="-86.7809"/>
+    <node id="1003" lat="36.1635" lon="-86.7802"/>
 
+    <!-- Forward one-way residential road -->
     <way id="2001">
         <nd ref="1001"/>
         <nd ref="1002"/>
+        <nd ref="1003"/>
+
         <tag k="highway" v="residential"/>
         <tag k="name" v="Main Street"/>
+        <tag k="oneway" v="yes"/>
+        <tag k="maxspeed" v="30"/>
+        <tag k="surface" v="asphalt"/>
     </way>
+
+    <!-- Reverse one-way service road -->
+    <way id="2002">
+        <nd ref="1003"/>
+        <nd ref="1002"/>
+
+        <tag k="highway" v="service"/>
+        <tag k="name" v="Service Road"/>
+        <tag k="oneway" v="-1"/>
+    </way>
+
+    <!-- Road with an unresolved node reference -->
+    <way id="2003">
+        <nd ref="1002"/>
+        <nd ref="9999"/>
+
+        <tag k="highway" v="residential"/>
+        <tag k="name" v="Incomplete Road"/>
+    </way>
+
+    <!-- Non-road way: should not enter the road collection -->
+    <way id="2004">
+        <nd ref="1001"/>
+        <nd ref="1002"/>
+
+        <tag k="building" v="yes"/>
+    </way>
+
 </osm>
