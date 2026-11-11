@@ -42,6 +42,7 @@ endfunction()
 add_library(mapforge STATIC
     src/version.cpp
     src/osm/osm_parser.cpp
+    src/graph/graph.cpp
 )
 
 add_library(MapForge::MapForge ALIAS mapforge)
