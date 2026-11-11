@@ -48,4 +48,13 @@
         <tag k="building" v="yes"/>
     </way>
 
+    <way id="2005">
+        <nd ref="1001"/>
+        <nd ref="1003"/>
+        
+        <tag k="highway" v="tertiary"/>
+        <tag k="name" v="Two-Way Road"/>
+        <tag k="oneway" v="no"/>
+    </way>
+
 </osm>
