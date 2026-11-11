@@ -5,7 +5,7 @@
 #include <unordered_map>
 #include <unordered_set>
 
-#include "mapforge/geography/distance.hpp"
+#include "mapforge/geography/geo_utils.hpp"
 
 namespace mapforge::graph {
 
