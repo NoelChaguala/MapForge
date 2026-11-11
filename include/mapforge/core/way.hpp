@@ -1,6 +1,8 @@
 
 #pragma once
 
+#include <string>
+#include <unordered_map>
 #include <vector>
 
 #include "mapforge/core/osm_id.hpp"
@@ -8,13 +10,18 @@
 
 namespace mapforge::core {
 
-struct Way {
-    OSMId id{0};
+    struct Way {
+        OSMId id{0};
 
-    std::vector<OSMId> node_references;
+        // Ordered OSM node IDs defining the way.
+        std::vector<OSMId> node_references;
 
-    RoadMetadata metadata;
-};
+        // Normalized information used by MapForge.
+        RoadMetadata metadata;
+
+        // Original OSM tags preserved for future use.
+        std::unordered_map<std::string, std::string> tags;
+    };
 
 }
 
