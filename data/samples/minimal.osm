@@ -1,0 +1,13 @@
+
+<?xml version="1.0" encoding="UTF-8"?>
+<osm version="0.6" generator="MapForge">
+    <node id="1001" lat="36.1627" lon="-86.7816"/>
+    <node id="1002" lat="36.1630" lon="-86.7809"/>
+
+    <way id="2001">
+        <nd ref="1001"/>
+        <nd ref="1002"/>
+        <tag k="highway" v="residential"/>
+        <tag k="name" v="Main Street"/>
+    </way>
+</osm>

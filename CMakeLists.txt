@@ -1,4 +1,3 @@
-
 cmake_minimum_required(VERSION 3.20)
 
 project(MapForge
@@ -7,16 +6,27 @@ project(MapForge
     LANGUAGES CXX
 )
 
-# C++ configuration
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-# Build options
+include(FetchContent)
+
+set(PUGIXML_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+set(PUGIXML_INSTALL OFF CACHE BOOL "" FORCE)
+
+FetchContent_Declare(
+    pugixml
+    GIT_REPOSITORY https://github.com/zeux/pugixml.git
+    GIT_TAG v1.16
+    GIT_SHALLOW TRUE
+)
+
+FetchContent_MakeAvailable(pugixml)
+
 option(MAPFORGE_BUILD_TESTS "Build MapForge tests" OFF)
 option(MAPFORGE_BUILD_BENCHMARKS "Build MapForge benchmarks" OFF)
 
-# Compiler warnings
 function(mapforge_enable_warnings target)
     if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
         target_compile_options(${target} PRIVATE
@@ -29,9 +39,9 @@ function(mapforge_enable_warnings target)
     endif()
 endfunction()
 
-# Reusable MapForge library
 add_library(mapforge STATIC
     src/version.cpp
+    src/osm/osm_parser.cpp
 )
 
 add_library(MapForge::MapForge ALIAS mapforge)
@@ -43,9 +53,13 @@ target_include_directories(mapforge
 
 target_compile_features(mapforge PUBLIC cxx_std_20)
 
+target_link_libraries(mapforge
+    PRIVATE
+        pugixml::pugixml
+)
+
 mapforge_enable_warnings(mapforge)
 
-# MapForge executable
 add_executable(MapForge
     src/main.cpp
 )
@@ -57,13 +71,11 @@ target_link_libraries(MapForge
 
 mapforge_enable_warnings(MapForge)
 
-# Optional tests
 if(MAPFORGE_BUILD_TESTS)
     enable_testing()
     add_subdirectory(tests)
 endif()
 
-# Optional benchmarks
 if(MAPFORGE_BUILD_BENCHMARKS)
     add_subdirectory(benchmarks)
 endif()
