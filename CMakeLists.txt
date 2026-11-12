@@ -59,9 +59,12 @@ endfunction()
 add_library(mapforge STATIC
     src/version.cpp
     src/osm/osm_parser.cpp
+    
     src/graph/graph.cpp
     src/graph/graph_builder.cpp
     src/graph/nearby_search.cpp
+    src/graph/router.cpp
+    
     src/geography/geo_utils.cpp
 )
 
