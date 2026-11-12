@@ -1,3 +1,4 @@
+
 cmake_minimum_required(VERSION 3.20)
 
 project(MapForge
@@ -12,6 +13,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 include(FetchContent)
 
+# pugixml configuration
 set(PUGIXML_BUILD_TESTS OFF CACHE BOOL "" FORCE)
 set(PUGIXML_INSTALL OFF CACHE BOOL "" FORCE)
 
@@ -24,9 +26,23 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(pugixml)
 
+# Project options
 option(MAPFORGE_BUILD_TESTS "Build MapForge tests" OFF)
 option(MAPFORGE_BUILD_BENCHMARKS "Build MapForge benchmarks" OFF)
 
+# GoogleTest configuration
+if(MAPFORGE_BUILD_TESTS)
+    FetchContent_Declare(
+        googletest
+        GIT_REPOSITORY https://github.com/google/googletest.git
+        GIT_TAG v1.16.0
+        GIT_SHALLOW TRUE
+    )
+
+    FetchContent_MakeAvailable(googletest)
+endif()
+
+# Compiler warnings
 function(mapforge_enable_warnings target)
     if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
         target_compile_options(${target} PRIVATE
@@ -39,15 +55,14 @@ function(mapforge_enable_warnings target)
     endif()
 endfunction()
 
+# MapForge library
 add_library(mapforge STATIC
     src/version.cpp
     src/osm/osm_parser.cpp
     src/graph/graph.cpp
-
-    src/geography/geo_utils.cpp
-
     src/graph/graph_builder.cpp
-    
+    src/graph/nearby_search.cpp
+    src/geography/geo_utils.cpp
 )
 
 add_library(MapForge::MapForge ALIAS mapforge)
@@ -66,6 +81,7 @@ target_link_libraries(mapforge
 
 mapforge_enable_warnings(mapforge)
 
+# Main application
 add_executable(MapForge
     src/main.cpp
 )
@@ -77,11 +93,13 @@ target_link_libraries(MapForge
 
 mapforge_enable_warnings(MapForge)
 
+# Testing
 if(MAPFORGE_BUILD_TESTS)
     enable_testing()
     add_subdirectory(tests)
 endif()
 
+# Benchmarks
 if(MAPFORGE_BUILD_BENCHMARKS)
     add_subdirectory(benchmarks)
 endif()
